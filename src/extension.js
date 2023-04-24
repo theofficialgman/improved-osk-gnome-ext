@@ -406,6 +406,10 @@ function enable() {
     affectsStruts: settings.get_boolean("resize-desktop"),
     trackFullscreen: false,
   });
+  
+  settings.connect("changed::toggle", function () {
+    toggleOSK();
+  });
 }
 
 function disable() {

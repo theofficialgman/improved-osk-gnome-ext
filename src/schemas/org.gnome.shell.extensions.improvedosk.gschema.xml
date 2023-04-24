@@ -21,5 +21,8 @@
     <key name="portrait-height" type="i">
       <default>16</default>
     </key>
+    <key name="toggle" type="b">
+      <default>false</default>
+    </key>
   </schema>
 </schemalist>
