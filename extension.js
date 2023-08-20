@@ -38,9 +38,7 @@ let OSKIndicator = GObject.registerClass(
         let button = event.get_button();
 
         if (button == 1) {
-          if (Main.keyboard._keyboard._keyboardVisible) return Main.keyboard.close();
-
-          Main.keyboard.open(Main.layoutManager.bottomIndex);
+          toggleOSK();
         }
         if (button == 3) {
           ExtensionUtils.openPrefs();
@@ -48,13 +46,17 @@ let OSKIndicator = GObject.registerClass(
       });
 
       this.connect("touch-event", function () {
-        if (Main.keyboard._keyboard._keyboardVisible) return Main.keyboard.close();
-
-        Main.keyboard.open(Main.layoutManager.bottomIndex);
+        toggleOSK();
       });
     }
   }
 );
+
+function toggleOSK() {
+  if (Main.keyboard._keyboard._keyboardVisible) return Main.keyboard.close();
+
+  Main.keyboard.open(Main.layoutManager.bottomIndex);
+}
 
 // Overrides
 function override_lastDeviceIsTouchScreen() {
@@ -717,6 +719,10 @@ function enable() {
   Main.layoutManager.addTopChrome(Main.layoutManager.keyboardBox, {
     affectsStruts: settings.get_boolean("resize-desktop"),
     trackFullscreen: false,
+  });
+  
+  settings.connect("changed::toggle", function () {
+    toggleOSK();
   });
 }
 
